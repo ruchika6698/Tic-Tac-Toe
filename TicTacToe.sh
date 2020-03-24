@@ -36,15 +36,31 @@ function displayBoard(){
 	echo " |_ ${gameBoard[6]} _|_ ${gameBoard[7]} _|_ ${gameBoard[8]} _|"
 }
 
+#function to check sides
+function checkSides(){
+   flag=0
+   if [[ ${gameBoard[$(($position))]} != "X" && ${gameBoard[$(($position))]} != "O" ]]
+   then
+      Number=$((${gameBoard[$position]}%2))
+      if [[ $Number -eq 0 ]]
+		then
+			flag=1
+			echo  ${gameBoard[$(($position))]}
+		fi
+   fi
+}
+
+
 #Function to check Center position
 function checkCenter(){
-   position=0
+   flag=0
+	position=0
    if [[ ${gameBoard[$(($position+4))]} != "X" && ${gameBoard[$(($position+4))]} != "O" ]]
    then
       echo  ${gameBoard[$(($position+4))]}
    else
-      randomMove=$((RANDOM%9+1))
-      echo $randomMove
+      sides=$( checkSides )
+		printf "$sides \n"
    fi
 }
 
@@ -66,6 +82,8 @@ function checkCorner(){
 	fi
 }
 
+
+
 #If opponent is winning then block opponent
 function checkopponent(){
 	flag=0
@@ -78,59 +96,59 @@ function checkopponent(){
 			break
 		elif  [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+2)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position+1))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position+1))]}
+			break
 		elif [[ ${gameBoard[$position+1]} -eq "X" && ${gameBoard[ $(($position+2)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position))]}
+			break
 		elif  [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+3)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position+6))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position+6))]}
+			break
 		elif [[ ${gameBoard[$position+3]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position))]}
+			break
 		elif  [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position+3))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position+3))]}
+			break
 		elif [[ ${gameBoard[$position+2]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position+4))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position+4))]}
+			break
 		elif  [[ ${gameBoard[$position+2]} -eq "X" && ${gameBoard[ $(($position+4)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position+6))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position+6))]}
+			break
 		elif [[ ${gameBoard[$position+4]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position+2))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position+2))]}
+			break
 		elif [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+5)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position+8))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position+8))]}
+			break
 		elif  [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+8)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position+5))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position+5))]}
+			break
 		elif [[ ${gameBoard[$position+5]} -eq "X" && ${gameBoard[ $(($position+8)) ]} -eq "X" ]]
 		then
-         flag=1
-         echo ${gameBoard[$(($position))]}
-         break
+			flag=1
+			echo ${gameBoard[$(($position))]}
+			break
 		fi
 	done
 	if [[ $flag -eq 0 ]]
@@ -189,20 +207,20 @@ function CheckingForRows(){
 			break
 		elif [[ ${gameBoard[$position+3]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+5)) ]} -eq 'X' ]]
 		then
-         temp2=$TRUE
-         break
+			temp2=$TRUE
+			break
 		elif [[ ${gameBoard[$position+3]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+5)) ]} -eq 'O' ]]
 		then
-         temp2=$POSITIVE
-         break
+			temp2=$POSITIVE
+			break
 		elif [[ ${gameBoard[$position+6]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+7)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'X' ]]
 		then
-         temp2=$TRUE
-         break
+			temp2=$TRUE
+			break
 		elif [[ ${gameBoard[$position+6]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+7)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'O' ]]
 		then
-         temp2=$POSITIVE
-     	   break
+			temp2=$POSITIVE
+			break
 		else
 			temp1=$FALSE
 		fi
@@ -225,20 +243,20 @@ function CheckingForCoulmns(){
 			break
 		elif [[ ${gameBoard[$position+1]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+7)) ]} -eq 'X' ]]
 		then
-         temp2=$TRUE
-         break
+			temp2=$TRUE
+			break
 		elif [[ ${gameBoard[$position+1]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+7)) ]} -eq 'O' ]]
 		then
-         temp2=$POSITIVE
-         break
+			temp2=$POSITIVE
+			break
 		elif [[ ${gameBoard[$position+2]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+5)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'X' ]]
 		then
-         temp2=$TRUE
-         break
+			temp2=$TRUE
+			break
 		elif [[ ${gameBoard[$position+2]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+5)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'O' ]]
 		then
-         temp2=$POSITIVE
-         break
+			temp2=$POSITIVE
+			break
 		else
 			temp2=$FALSE
 		fi
