@@ -38,11 +38,85 @@ function displayBoard(){
 	echo " |_ ${gameBoard[6]} _|_ ${gameBoard[7]} _|_ ${gameBoard[8]} _|"
 }
 
+#
+function checkopponent(){
+	flag=0
+	for (( position=0; position<=8; position++ ))
+	do
+		if [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+1)) ]} -eq "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$(($position+2))]}
+			break
+		elif  [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+2)) ]} -eq "X" ]]
+		then
+         flag=1
+         echo ${gameBoard[$(($position+1))]}
+         break
+		elif [[ ${gameBoard[$pisition+1]} -eq "X" && ${gameBoard[ $(($position+2)) ]} -eq "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($position))]}
+         break
+		elif  [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+3)) ]} -eq "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($position+6))]}
+         break
+      elif [[ ${gameBoard[$pisition+3]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($position))]}
+         break
+		elif  [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($position+3))]}
+         break
+      elif [[ ${gameBoard[$pisition+2]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($position+4))]}
+         break
+		elif  [[ ${gameBoard[$pisition+2]} -eq "X" && ${gameBoard[ $(($position+4)) ]} -eq "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($position+6))]}
+         break
+      elif [[ ${gameBoard[$pisition+4]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($position+2))]}
+         break
+		elif [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+5)) ]} -eq "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($position+8))]}
+         break
+      elif  [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+8)) ]} -eq "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($position+5))]}
+         break
+      elif [[ ${gameBoard[$pisition+5]} -eq "X" && ${gameBoard[ $(($position+8)) ]} -eq "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($position))]}
+         break
+		fi
+	done
+	if [[ $flag -eq 0 ]]
+	then
+		randomcell=$((1+RANDOM%9))
+		printf "$randomcell \n"
+	fi
+}
 
+#function for player1 input
 function givingCellInput(){
 	printf "User \n"
 	read -p "enter cell number:" Cell
-	for((i=0; i<=8; i++))
+	for((position=0; position<=8; position++))
    do
 		if [[ ${gameBoard[$position]} -eq $Cell ]]
 		then
@@ -54,7 +128,7 @@ function givingCellInput(){
 	done
 }
 
-#Function for another player
+#Function for player2 input
 function givingComputerInput(){
 	printf "Computer \n"
 	Cell=$((RANDOM%9+1))
@@ -85,6 +159,22 @@ function CheckingForRows(){
 		then
 			temp1=$POSITIVE
 			break
+		elif [[ ${gameBoard[$position+3]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+5)) ]} -eq 'X' ]]
+		then
+         temp2=$TRUE
+         break
+		elif [[ ${gameBoard[$position+3]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+5)) ]} -eq 'O' ]]
+		then
+         temp2=$POSITIVE
+         break
+		elif [[ ${gameBoard[$position+6]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+7)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'X' ]]
+		then
+         temp2=$TRUE
+         break
+		elif [[ ${gameBoard[$position+6]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+7)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'O' ]]
+		then
+         temp2=$POSITIVE
+     	   break
 		else
 			temp1=$FALSE
 		fi
@@ -95,31 +185,47 @@ function CheckingForRows(){
 #Function for checking Winning Condition Coulmnwise
 function CheckingForCoulmns(){
    temp2=0
-   for(( position=1; position<9; position++ ))
-   do
-      if [[ ${gameBoard[$position]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+3)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+6)) ]} -eq 'X' ]]
-      then
-         temp2=$TRUE
+	for(( position=1; position<9; position++ ))
+	do
+		if [[ ${gameBoard[$position]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+3)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+6)) ]} -eq 'X' ]]
+		then
+			temp2=$TRUE
 			break
 		elif [[ ${gameBoard[$position]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+3)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+6)) ]} -eq 'O' ]]
 		then
 			temp2=$POSITIVE
 			break
-      else
-         temp2=$FALSE
-      fi
-   done
+		elif [[ ${gameBoard[$position+1]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+7)) ]} -eq 'X' ]]
+		then
+         temp2=$TRUE
+         break
+		elif [[ ${gameBoard[$position+1]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+7)) ]} -eq 'O' ]]
+		then
+         temp2=$POSITIVE
+         break
+		elif [[ ${gameBoard[$position+2]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+5)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'X' ]]
+		then
+         temp2=$TRUE
+         break
+		elif [[ ${gameBoard[$position+2]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+5)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'O' ]]
+		then
+         temp2=$POSITIVE
+         break
+		else
+			temp2=$FALSE
+		fi
+	done
    printf "$temp2 \n"
 }
 
 #Function for checking Winning Condition diagonally
 function CheckingForDiagonally(){
    temp3=0
-   for(( position=1; position<9; position++ ))
-   do
-      if [[ ${gameBoard[$position]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'X' ]]
-      then
-         temp3=$TRUE
+	for(( position=1; position<9; position++ ))
+	do
+		if [[ ${gameBoard[$position]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'X' ]]
+		then
+			temp3=$TRUE
 			break
 		elif [[ ${gameBoard[$position+2]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+6)) ]} -eq 'X' ]]
 		then
