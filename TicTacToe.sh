@@ -23,11 +23,9 @@ function assignSymbol(){
 	Number=$(( RANDAM%2 ))
 	if [[ $Number -eq 1 ]]
 	then
-		printf "Player got 'X' Symbol \n"
-		printf "Player1 will start \n"
+		printf "Player got 'X' Symbol and player will start first \n"
 	else
-		printf "Player got 'O' Symbol \n"
-		printf "Player2 will start \n"
+		printf "Player got 'O' Symbol and Computer will start first \n"
 	fi
 }
 
@@ -38,68 +36,80 @@ function displayBoard(){
 	echo " |_ ${gameBoard[6]} _|_ ${gameBoard[7]} _|_ ${gameBoard[8]} _|"
 }
 
-#
+#function to check at corner
+function checkCorner(){
+	flag=0
+	number=$((${gameBoard[$position]}%2))
+	if [[ $number -eq 1 ]] && [[ ${gameBoard[$position]} -ne 5 ]]
+	then
+		flag=1
+		echo "${gameBoard[position]}"
+		break
+	fi
+}
+
+#If opponent is winning then block opponent
 function checkopponent(){
 	flag=0
 	for (( position=0; position<=8; position++ ))
 	do
-		if [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+1)) ]} -eq "X" ]]
+		if [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+1)) ]} -eq "X" ]]
 		then
 			flag=1
 			echo ${gameBoard[$(($position+2))]}
 			break
-		elif  [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+2)) ]} -eq "X" ]]
+		elif  [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+2)) ]} -eq "X" ]]
 		then
          flag=1
          echo ${gameBoard[$(($position+1))]}
          break
-		elif [[ ${gameBoard[$pisition+1]} -eq "X" && ${gameBoard[ $(($position+2)) ]} -eq "X" ]]
-      then
+		elif [[ ${gameBoard[$position+1]} -eq "X" && ${gameBoard[ $(($position+2)) ]} -eq "X" ]]
+		then
          flag=1
          echo ${gameBoard[$(($position))]}
          break
-		elif  [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+3)) ]} -eq "X" ]]
-      then
+		elif  [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+3)) ]} -eq "X" ]]
+		then
          flag=1
          echo ${gameBoard[$(($position+6))]}
          break
-      elif [[ ${gameBoard[$pisition+3]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
-      then
+		elif [[ ${gameBoard[$position+3]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
+		then
          flag=1
          echo ${gameBoard[$(($position))]}
          break
-		elif  [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
-      then
+		elif  [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
+		then
          flag=1
          echo ${gameBoard[$(($position+3))]}
          break
-      elif [[ ${gameBoard[$pisition+2]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
-      then
+		elif [[ ${gameBoard[$position+2]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
+		then
          flag=1
          echo ${gameBoard[$(($position+4))]}
          break
-		elif  [[ ${gameBoard[$pisition+2]} -eq "X" && ${gameBoard[ $(($position+4)) ]} -eq "X" ]]
-      then
+		elif  [[ ${gameBoard[$position+2]} -eq "X" && ${gameBoard[ $(($position+4)) ]} -eq "X" ]]
+		then
          flag=1
          echo ${gameBoard[$(($position+6))]}
          break
-      elif [[ ${gameBoard[$pisition+4]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
-      then
+		elif [[ ${gameBoard[$position+4]} -eq "X" && ${gameBoard[ $(($position+6)) ]} -eq "X" ]]
+		then
          flag=1
          echo ${gameBoard[$(($position+2))]}
          break
-		elif [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+5)) ]} -eq "X" ]]
-      then
+		elif [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+5)) ]} -eq "X" ]]
+		then
          flag=1
          echo ${gameBoard[$(($position+8))]}
          break
-      elif  [[ ${gameBoard[$pisition]} -eq "X" && ${gameBoard[ $(($position+8)) ]} -eq "X" ]]
-      then
+		elif  [[ ${gameBoard[$position]} -eq "X" && ${gameBoard[ $(($position+8)) ]} -eq "X" ]]
+		then
          flag=1
          echo ${gameBoard[$(($position+5))]}
          break
-      elif [[ ${gameBoard[$pisition+5]} -eq "X" && ${gameBoard[ $(($position+8)) ]} -eq "X" ]]
-      then
+		elif [[ ${gameBoard[$position+5]} -eq "X" && ${gameBoard[ $(($position+8)) ]} -eq "X" ]]
+		then
          flag=1
          echo ${gameBoard[$(($position))]}
          break
@@ -107,8 +117,8 @@ function checkopponent(){
 	done
 	if [[ $flag -eq 0 ]]
 	then
-		randomcell=$((1+RANDOM%9))
-		printf "$randomcell \n"
+		corner=$( checkCorner )
+		printf "$corner \n"
 	fi
 }
 
