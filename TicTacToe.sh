@@ -11,7 +11,8 @@ function resetBoard(){
 
 function assignSymbol(){
 	resetBoard
-	if [[ $((RANDOM%2)) -eq 1 ]]
+	Number=$(( RANDAM%2 ))
+	if [[ $Number -eq 1 ]]
 	then
 		printf "Player got 'X' Symbol \n"
 	else
@@ -19,3 +20,11 @@ function assignSymbol(){
 	fi
 }
 assignSymbol
+
+function toss(){
+	assignSymbol
+	if [[ $Number -eq 1 ]]
+	then
+		printf "Player will start first \n"
+	fi
+}
