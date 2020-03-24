@@ -36,6 +36,19 @@ function displayBoard(){
 	echo " |_ ${gameBoard[6]} _|_ ${gameBoard[7]} _|_ ${gameBoard[8]} _|"
 }
 
+#Function to check Center position
+function checkCenter(){
+   position=0
+   if [[ ${gameBoard[$(($position+4))]} != "X" && ${gameBoard[$(($position+4))]} != "O" ]]
+   then
+      echo  ${gameBoard[$(($position+4))]}
+   else
+      randomMove=$((RANDOM%9+1))
+      echo $randomMove
+   fi
+}
+
+
 #function to check at corner
 function checkCorner(){
 	flag=0
@@ -45,6 +58,11 @@ function checkCorner(){
 		flag=1
 		echo "${gameBoard[position]}"
 		break
+	fi
+	if [[ $flag -eq 0 ]]
+	then
+		center=$( $checkCenter )
+		printf "$center \n"
 	fi
 }
 
