@@ -1,6 +1,8 @@
 #!/bin/bash -x
 
 printf "Welcome to Tic Tac Toe Game \n"
+TRUE=1
+FALSE=0
 
 #Function for Fresh start for resetting Board
 function resetBoard(){
@@ -10,7 +12,7 @@ function resetBoard(){
 	echo " ${gameBoard[6]} ${gameBoard[7]} ${gameBoard[8]} "
 }
 
-#Function for Assign a Symbol and which player start first
+#function for Assign a Symbol and which player start first
 function assignSymbol(){
 	resetBoard
 	Number=$(( RANDAM%2 ))
@@ -31,27 +33,78 @@ function displayBoard(){
 	echo " |_ ${gameBoard[6]} _|_ ${gameBoard[7]} _|_ ${gameBoard[8]} _|"
 }
 
-#Function for giving CellInput
+
 function givingCellInput(){
 	count=0
-	for(( position=1; position<9; position++ ))
-	do
-		read -p "Enter a CellInput:" Cell
-		if [[ $gameBoard[$position] -eq $Cell ]]
-		then
-			gameBoard[ $(( $Cell - 1 )) ]='X'
-			(( count++ ))
-			displayBoard
-		else
-			printf "Can't Print on Index"
-		fi
+	read -p "enter cell number:" Cell
+	gameBoard[$(($Cell-1))]="X"
+	(( count++ ))
+	displayBoard
+
 }
 
+#Function for checking Winning Condition rowwise
+function CheckingForRows(){
+	temp1=0
+	for(( position=1; position<9; position++ ))
+	do
+		if [ ${gameBoard[$position]} -eq 'X' ] && [ ${gameBoard[ $(($position+1)) ]} -eq 'X' ] && [ ${gameBoard[ $(($position+2)) ] -eq 'X' ]
+		then
+			temp1=$TRUE
+		else
+			temp1=$FALSE
+		fi
+	done
+	printf "$temp1 \n"
+}
+
+#Function for checking Winning Condition Coulmnwise
+function CheckingForCoulmns(){
+   temp2=0
+   for(( position=1; position<9; position++ ))
+   do
+      if [ ${gameBoard[$position]} -eq 'X' ] && [ ${gameBoard[ $(($position+3)) ]} -eq 'X' ] && [ ${gameBoard[ $(($position+6)) ] -eq 'X' ]
+      then
+         temp2=$TRUE
+      else
+         temp2=$FALSE
+      fi
+   done
+   printf "$temp2 \n"
+}
+
+#Function for checking Winning Condition diagonally
+function CheckingForDiagonally(){
+   temp3=0
+   for(( position=1; position<9; position++ ))
+   do
+      if [ ${gameBoard[$position]} -eq 'X' ] && [ ${gameBoard[ $(($position+4)) ]} -eq 'X' ] && [ ${gameBoard[ $(($position+8)) ] -eq 'X' ]
+      then
+         temp3=$TRUE
+		elif [ ${gameBoard[$position+2]} -eq 'X' ] && [ ${gameBoard[ $(($position+4)) ]} -eq 'X' ] && [ ${gameBoard[ $(($position+6)) ] -eq 'X' ]
+      then
+			temp3=$TRUE
+		else
+         temp3=$FALSE
+      fi
+   done
+   printf "$temp3 \n"
+}
+
+
 function Calculate(){
+	assignSymbol
 	while [[ $count != 9 ]]
 	do
-		assignSymbol
 		givingCellInput
+		a=$( CheckingForRows )
+		b=$( CheckingForCoulmns )
+		c=$( CheckingForDiagonally )
+		if [ $a -eq 1 ] || [ $b -eq 1 ] || [ $c -eq 1 ]
+		then
+			printf "You Win \n"
+			break
+		fi
 	done
 }
 Calculate
