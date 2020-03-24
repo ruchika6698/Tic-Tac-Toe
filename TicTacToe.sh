@@ -3,6 +3,11 @@
 printf "Welcome to Tic Tac Toe Game \n"
 TRUE=1
 FALSE=0
+POSITIVE=2
+
+#variable
+count=0
+turn=" "
 
 #Function for Fresh start for resetting Board
 function resetBoard(){
@@ -35,12 +40,36 @@ function displayBoard(){
 
 
 function givingCellInput(){
-	count=0
+	printf "User \n"
 	read -p "enter cell number:" Cell
-	gameBoard[$(($Cell-1))]="X"
-	(( count++ ))
-	displayBoard
+	for((i=0; i<=8; i++))
+   do
+		if [[ ${gameBoard[$position]} -eq $Cell ]]
+		then
+			gameBoard[$(($Cell-1))]="X"
+			(( count++ ))
+			displayBoard
+		fi
+		turn="Computer"
+	done
+}
 
+#Function for another player
+function givingComputerInput(){
+	printf "Computer \n"
+	Cell=$((RANDOM%9+1))
+	for((i=0; i<=8; i++))
+	do
+		if [[ ${gameBoard[$position]} -eq $Cell ]]
+		then
+			gameBoard[$(($Cell-1))]="O"
+			(( counter++ ))
+			turn="User"
+			displayBoard
+			break
+		fi
+		turn="Computer"
+	done
 }
 
 #Function for checking Winning Condition rowwise
@@ -48,9 +77,14 @@ function CheckingForRows(){
 	temp1=0
 	for(( position=1; position<9; position++ ))
 	do
-		if [ ${gameBoard[$position]} -eq 'X' ] && [ ${gameBoard[ $(($position+1)) ]} -eq 'X' ] && [ ${gameBoard[ $(($position+2)) ] -eq 'X' ]
+		if [[ ${gameBoard[$position]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+1)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+2)) ]} -eq 'X' ]]
 		then
 			temp1=$TRUE
+			break
+		elif [[ ${gameBoard[$position]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+1)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+2)) ]} -eq 'O' ]]
+		then
+			temp1=$POSITIVE
+			break
 		else
 			temp1=$FALSE
 		fi
@@ -63,9 +97,14 @@ function CheckingForCoulmns(){
    temp2=0
    for(( position=1; position<9; position++ ))
    do
-      if [ ${gameBoard[$position]} -eq 'X' ] && [ ${gameBoard[ $(($position+3)) ]} -eq 'X' ] && [ ${gameBoard[ $(($position+6)) ] -eq 'X' ]
+      if [[ ${gameBoard[$position]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+3)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+6)) ]} -eq 'X' ]]
       then
          temp2=$TRUE
+			break
+		elif [[ ${gameBoard[$position]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+3)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+6)) ]} -eq 'O' ]]
+		then
+			temp2=$POSITIVE
+			break
       else
          temp2=$FALSE
       fi
@@ -78,33 +117,54 @@ function CheckingForDiagonally(){
    temp3=0
    for(( position=1; position<9; position++ ))
    do
-      if [ ${gameBoard[$position]} -eq 'X' ] && [ ${gameBoard[ $(($position+4)) ]} -eq 'X' ] && [ ${gameBoard[ $(($position+8)) ] -eq 'X' ]
+      if [[ ${gameBoard[$position]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'X' ]]
       then
          temp3=$TRUE
-		elif [ ${gameBoard[$position+2]} -eq 'X' ] && [ ${gameBoard[ $(($position+4)) ]} -eq 'X' ] && [ ${gameBoard[ $(($position+6)) ] -eq 'X' ]
-      then
+			break
+		elif [[ ${gameBoard[$position+2]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+6)) ]} -eq 'X' ]]
+		then
 			temp3=$TRUE
+			break
+		elif [[ ${gameBoard[$position]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'O' ]]
+		then
+			temp3=$POSITIVE
+			break
+		elif [[ ${gameBoard[$position+2]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'O' ]] && [[ ${gameBoard[ $(($position+6)) ]} -eq 'O' ]]
+		then
+			temp3=$POSITIVE
+			break
 		else
-         temp3=$FALSE
-      fi
-   done
+			temp3=$FALSE
+		fi
+	done
    printf "$temp3 \n"
 }
 
-
-function Calculate(){
+#function for playing game
+function playing(){
 	assignSymbol
 	while [[ $count != 9 ]]
 	do
 		givingCellInput
+		if [[ $turn -eq Computer ]]
+		then
+			givingComputerInput
+		else
+			givingCellInput
+		fi
 		a=$( CheckingForRows )
 		b=$( CheckingForCoulmns )
 		c=$( CheckingForDiagonally )
-		if [ $a -eq 1 ] || [ $b -eq 1 ] || [ $c -eq 1 ]
+		if [[ $a -eq 1 ]] || [[ $b -eq 1 ]] || [[ $c -eq 1 ]]
 		then
 			printf "You Win \n"
 			break
+		elif [[ $a -eq 2 ]] || [[ $b -eq 2 ]] || [[ $c -eq 2 ]]
+      then
+         printf "Computer Win \n"
+         break
+
 		fi
 	done
 }
-Calculate
+playing
