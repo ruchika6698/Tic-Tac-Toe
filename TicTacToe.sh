@@ -261,7 +261,7 @@ function CheckingForCoulmns(){
 			temp2=$FALSE
 		fi
 	done
-   printf "$temp2 \n"
+	printf "$temp2 \n"
 }
 
 #Function for checking Winning Condition diagonally
@@ -289,7 +289,7 @@ function CheckingForDiagonally(){
 			temp3=$FALSE
 		fi
 	done
-   printf "$temp3 \n"
+	printf "$temp3 \n"
 }
 
 #function for playing game
@@ -309,13 +309,14 @@ function playing(){
 		c=$( CheckingForDiagonally )
 		if [[ $a -eq 1 ]] || [[ $b -eq 1 ]] || [[ $c -eq 1 ]]
 		then
-			printf "You Win \n"
+			printf "Player Win \n"
 			break
 		elif [[ $a -eq 2 ]] || [[ $b -eq 2 ]] || [[ $c -eq 2 ]]
       then
          printf "Computer Win \n"
          break
-
+		else
+			printf "Match is Tie \n"
 		fi
 	done
 }
