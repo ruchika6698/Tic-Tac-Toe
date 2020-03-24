@@ -38,30 +38,30 @@ function displayBoard(){
 
 #function to check sides
 function checkSides(){
-   flag=0
-   if [[ ${gameBoard[$(($position))]} != "X" && ${gameBoard[$(($position))]} != "O" ]]
-   then
-      Number=$((${gameBoard[$position]}%2))
-      if [[ $Number -eq 0 ]]
+	flag=0
+	if [[ ${gameBoard[$(($position))]} != "X" && ${gameBoard[$(($position))]} != "O" ]]
+	then
+		Number1=$((${gameBoard[$position]}%2))
+		if [[ $Number1 -eq 0 ]]
 		then
 			flag=1
 			echo  ${gameBoard[$(($position))]}
 		fi
-   fi
+	fi
 }
 
 
 #Function to check Center position
 function checkCenter(){
-   flag=0
+	flag=0
 	position=0
-   if [[ ${gameBoard[$(($position+4))]} != "X" && ${gameBoard[$(($position+4))]} != "O" ]]
-   then
-      echo  ${gameBoard[$(($position+4))]}
-   else
-      sides=$( checkSides )
+	if [[ ${gameBoard[$(($position+4))]} != "X" && ${gameBoard[$(($position+4))]} != "O" ]]
+	then
+		echo  ${gameBoard[$(($position+4))]}
+	else
+		sides=$( checkSides )
 		printf "$sides \n"
-   fi
+	fi
 }
 
 
@@ -163,7 +163,7 @@ function givingCellInput(){
 	printf "User \n"
 	read -p "enter cell number:" Cell
 	for((position=0; position<=8; position++))
-   do
+  	do
 		if [[ ${gameBoard[$position]} -eq $Cell ]]
 		then
 			gameBoard[$(($Cell-1))]="X"
@@ -178,7 +178,7 @@ function givingCellInput(){
 function givingComputerInput(){
 	printf "Computer \n"
 	Cell=$((RANDOM%9+1))
-	for((i=0; i<=8; i++))
+	for((position=0; position<=8; position++))
 	do
 		if [[ ${gameBoard[$position]} -eq $Cell ]]
 		then
@@ -230,7 +230,7 @@ function CheckingForRows(){
 
 #Function for checking Winning Condition Coulmnwise
 function CheckingForCoulmns(){
-   temp2=0
+	temp2=0
 	for(( position=1; position<9; position++ ))
 	do
 		if [[ ${gameBoard[$position]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+3)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+6)) ]} -eq 'X' ]]
@@ -266,7 +266,7 @@ function CheckingForCoulmns(){
 
 #Function for checking Winning Condition diagonally
 function CheckingForDiagonally(){
-   temp3=0
+	temp3=0
 	for(( position=1; position<9; position++ ))
 	do
 		if [[ ${gameBoard[$position]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+4)) ]} -eq 'X' ]] && [[ ${gameBoard[ $(($position+8)) ]} -eq 'X' ]]
@@ -312,9 +312,9 @@ function playing(){
 			printf "Player Win \n"
 			break
 		elif [[ $a -eq 2 ]] || [[ $b -eq 2 ]] || [[ $c -eq 2 ]]
-      then
-         printf "Computer Win \n"
-         break
+		then
+			printf "Computer Win \n"
+			break
 		else
 			printf "Match is Tie \n"
 		fi
